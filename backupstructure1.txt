@@ -1,0 +1,95 @@
+package main
+
+import (
+	"log"
+
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/widget"
+)
+
+func main() {
+	adminGUI()
+}
+
+var doImageAction, doDataAction, doUploadImages, doUploadData bool
+
+func adminGUI() { // Intialize a new application
+	myApp := app.New()
+	myWindow := myApp.NewWindow("Demo")
+	myWindow.Resize(fyne.NewSize(300, 300))
+
+	// Define contents in the canvas
+	imageActioncheck := widget.NewCheck("Perform Image Action and save blurhash to exif", func(value bool) {
+		log.Println("Image Action Check set to", value)
+	})
+
+	uploadImagescheck := widget.NewCheck("Automatically upload Images to firestore", func(value bool) {
+		log.Println("Upload Images Check set to", value)
+	})
+
+	dataActioncheck := widget.NewCheck("Perform Data Action and save it to Json", func(value bool) {
+		log.Println("Data Action Check set to", value)
+	})
+
+	uploadDataCheck := widget.NewCheck("Automatically upload Data to firestore", func(value bool) {
+		log.Println("Upload Data Check set to", value)
+	})
+
+	// Button to start the admin controller
+	startButton := widget.NewButton("Start", func() {
+		log.Println("Start Button Pressed")
+		doImageAction = imageActioncheck.Checked
+		doDataAction = dataActioncheck.Checked
+		doUploadImages = uploadImagescheck.Checked
+		doUploadData = uploadDataCheck.Checked
+		log.Println("Image Action Checked:", doImageAction)
+		log.Println("Data Action Checked:", doDataAction)
+		log.Println("Upload Images Checked:", doUploadImages)
+		log.Println("Upload Data Checked:", doUploadData)
+		adminController()
+	})
+
+	content := container.NewVBox(dataActioncheck, imageActioncheck, uploadImagescheck, uploadDataCheck, startButton)
+
+	// Set contents + Show and Run
+	myWindow.SetContent(content)
+	myWindow.ShowAndRun()
+}
+
+func adminController() {
+	log.Println("Admin Controller")
+	if doImageAction {
+		log.Println("Performing Image Action")
+		imageAction()
+	}
+	if doUploadImages {
+		log.Println("Uploading Images")
+		uploadImages()
+	}
+	if doDataAction {
+		log.Println("Performing Data Action")
+		dataAction()
+	}
+	if doUploadData {
+		log.Println("Uploading Data")
+		uploadData()
+	}
+}
+
+func dataAction() {
+	log.Println("Data Action")
+}
+
+func imageAction() {
+	log.Println("Image Action")
+}
+
+func uploadImages() {
+	log.Println("Upload Images")
+}
+
+func uploadData() {
+	log.Println("Upload Data")
+}
